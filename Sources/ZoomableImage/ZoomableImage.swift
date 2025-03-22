@@ -29,7 +29,7 @@ public struct ZoomableImage: View {
       ZStack {
         image
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .aspectRatio(contentMode: contentMode)
           .scaleEffect(scale, anchor: anchor)
           .gesture(
             MagnifyGesture()
