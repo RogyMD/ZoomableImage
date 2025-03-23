@@ -4,11 +4,11 @@ import SwiftUI
 public struct ZoomableImage: View {
   private let image: Image
   private let contentMode: ContentMode
-  @Binding private var isZooming: Bool
+  @Binding private var magnification: CGFloat?
   
   @GestureState private var magnifyValue: MagnifyGesture.Value?
   private var scale: CGFloat {
-    magnifyValue?.magnification ?? 1
+    magnification ?? 1
   }
   private var anchor: UnitPoint {
     magnifyValue?.startAnchor ?? .center
@@ -17,11 +17,11 @@ public struct ZoomableImage: View {
   public init(
     image: Image,
     contentMode: ContentMode = .fit,
-    isZooming: Binding<Bool> = .constant(false)
+    magnification: Binding<CGFloat?> = .constant(nil)
   ) {
     self.image = image
     self.contentMode = contentMode
-    _isZooming = isZooming
+    _magnification = magnification
   }
   
   public var body: some View {
@@ -42,8 +42,8 @@ public struct ZoomableImage: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .edgesIgnoringSafeArea(.all)
     }
-    .onChange(of: scale) { oldValue, newValue in
-      isZooming = scale != 1
+    .onChange(of: magnifyValue) { _, newValue in
+      magnification = newValue?.magnification
     }
   }
   
